@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test library</title>
+    <link rel="stylesheet" type="text/css" href="css/snake.winmgr.css" />
+    <script type="text/javascript" src="js/snake.js" ></script>
+    <script type="text/javascript" src="js/snake.winmgr.js" ></script>
+    <script type="text/javascript" >
+
+	S(function(){
+
+        sjs_winmgr()
+		.add({ overlay: true })
+		.content({ title:'Hello !',body:'How are you ?' });
+		
+	});
+	
+	</script>
+	<style>
+	
+	
+	
+	</style>
+</head>
+<body>
+
+<button onclick="sjs_winmgr().add().content({ title:'salam',body:'khoobi?' })" >Open a window</button>
+	
+</body>
+</html>
