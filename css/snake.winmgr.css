@@ -76,6 +76,7 @@
   text-align: center;
   width: 30px;
   height: 30px;
+  line-height: 30px;
   border-bottom: 1px solid #95a5a6;
   background-color: #ecf0f1;
   float: right;
@@ -83,7 +84,8 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-size: 24px;
+  font-size: 20px;
+  padding: auto;
 }
 .javasnake-winmgr-win .javasnake-winmgr-tab .javasnake-winmgr-tab-btn-close:hover {
   color: white;
@@ -111,7 +113,7 @@
 .javasnake-winmgr-win .javasnake-winmgr-body {
   display: block;
   position: relative;
-  min-width: 100%;
+  min-width: 250px;
   max-width: 100vw;
   min-height: 100px;
   max-height: 100vh;
@@ -125,6 +127,20 @@
   margin: 0;
   padding: 0;
   overflow: auto;
+}
+.javasnake-winmgr-win .javasnake-winmgr-resize-point {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(149, 165, 166, 0.5);
+  -webkit-border-radius: 100% 0 0 0;
+  -moz-border-radius: 100% 0 0 0;
+  border-radius: 100% 0 0 0;
+  cursor: nwse-resize;
 }
 .javasnake-winmgr-overlay {
   display: block;

@@ -4,15 +4,27 @@
     <meta charset="utf-8">
     <title>Test library</title>
     <link rel="stylesheet" type="text/css" href="css/snake.winmgr.css" />
-    <script type="text/javascript" src="js/snake.js" ></script>
+    <script type="text/javascript" src="js/Snake.js" ></script>
     <script type="text/javascript" src="js/snake.winmgr.js" ></script>
     <script type="text/javascript" >
 
 	S(function(){
 
         sjs_winmgr()
-		.add({ overlay: true })
-		.content({ title:'Hello !',body:'How are you ?' });
+            .add({
+                overlay: true,
+                resizable: true,
+                x: "center",
+                y: "center",
+                width: 500,
+                height: 360,
+                maximizeBtn: true
+            })
+            .content({
+                title:'salam',
+                body:'khoobi?'
+            });
+
 		
 	});
 	
@@ -25,7 +37,7 @@
 </head>
 <body>
 
-<button onclick="sjs_winmgr().add().content({ title:'salam',body:'khoobi?' })" >Open a window</button>
+
 	
 </body>
 </html>

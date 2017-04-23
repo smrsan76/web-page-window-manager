@@ -1,3 +1,8 @@
+/*
+web page window manager :: by SMRSAN
+for more info visit this rep: https://github.com/smrsan76/web-page-window-manager
+*/
+
 var sjs_winmgr = (function(){
 
     //A Window Sample Class
@@ -6,7 +11,10 @@ var sjs_winmgr = (function(){
         first_mousedown_y = null,
         first_win_x = null,
         first_win_y = null,
+        first_win_width = null,
+        first_win_height = null,
         tab_mousedown = false,
+        resize_mousedown = false,
         current_win = null,
         winmgr_overlay = {
             showFlag: false,
@@ -16,13 +24,16 @@ var sjs_winmgr = (function(){
             add: function(opts){
 
                 var newWin = {};
+                //Elements
                 newWin.elem_container = S("$new","div");
                 newWin.elem_tab = S("$new","div");
                 newWin.elem_body = S("$new","div");
                 newWin.elem_title = S("$new","div");
                 newWin.elem_inner_body = S(S("$new","div")).addClass("javasnake-winmgr-inner-body")[0];
-                newWin.moveAble = true;
+                newWin.elem_resize_point = S(S("$new","div")).addClass("javasnake-winmgr-resize-point")[0];
+
                 newWin.maximized = false;
+
                 //User options
                 newWin.win_width = (opts && typeof opts.width === "number")? opts.width:250;
                 newWin.win_height = (opts && typeof opts.height === "number")? opts.height:100;
@@ -32,6 +43,53 @@ var sjs_winmgr = (function(){
                 newWin.close_btn_flag = (opts && typeof opts.closeBtn === "boolean")? opts.closeBtn:true;
                 newWin.maximize_btn_flag = (opts && typeof opts.maximizeBtn === "boolean")? opts.maximizeBtn:false;
                 winmgr_overlay.showFlag = (opts && typeof opts.overlay === "boolean")? opts.overlay:false;
+                newWin.resizable_flag = (opts && typeof opts.resizable === "boolean")? opts.resizable:false;
+                newWin.movable_flag = (opts && typeof opts.movable === "boolean")? opts.movable:true;
+
+                //functions
+                newWin.close = function(){
+                    S(newWin.elem_container).remove();
+                    for(var i=0; i<win_elems.length; i++){
+                        if(win_elems[i] === newWin){
+                            win_elems.splice(i,1);
+                            break;
+                        }
+                    }
+                    if(win_elems.length === 0){
+                        S(winmgr_overlay.element).remove();
+                        winmgr_overlay.element = null;
+                        winmgr_overlay.showFlag = false;
+                    }
+                };
+                newWin.maximize = function(){
+                    if(!newWin.maximized) {//MAXimize it
+                        S(newWin.elem_container)
+                            .c$$("top: 0;left: 0");
+                        S(newWin.elem_body)
+                            .css({
+                                width: "100vw",
+                                height: "100vh"
+                            });
+                        newWin.moveAble = false;
+                        newWin.elem_maximize_btn.innerHTML = "]-[";
+                    } else {//MINimize it
+                        S(newWin.elem_container)
+                            .css({
+                                top: newWin.not_maximize_top + "px",
+                                left: newWin.not_maximize_left + "px",
+                                right: " ",
+                                bottom: " "
+                            });
+                        S(newWin.elem_body)
+                            .css({
+                                width: newWin.win_width + "px",
+                                height: newWin.win_height + "px"
+                            });
+                        newWin.moveAble = true;
+                        newWin.elem_maximize_btn.innerHTML = "[-]";
+                    }
+                    newWin.maximized = !newWin.maximized;
+                };
 
                 //Show Overlay
                 if(winmgr_overlay.showFlag && winmgr_overlay.element === null){
@@ -41,60 +99,41 @@ var sjs_winmgr = (function(){
 
                 }
 
+                //Resize point
+                S(newWin.elem_resize_point)
+                    .onMouseDown(function(event){
+
+                        if(first_mousedown_x === null) {
+                            first_mousedown_x = event.clientX;
+                            first_mousedown_y = event.clientY;
+                            first_win_width = S.styleToNum(S.realStyle(newWin.elem_body,"width",null))[0];
+                            first_win_height = S.styleToNum(S.realStyle(newWin.elem_body,"height",null))[0];
+                            current_win = newWin;
+                            resize_mousedown = true;
+                        }
+                        for(var i=0; i<win_elems.length; i++){
+
+                            if(win_elems[i] !== newWin &&
+                                S.styleToNum(win_elems[i].elem_container.style.zIndex)[0] > S.styleToNum(newWin.elem_container.style.zIndex)[0]){
+                                win_elems[i].elem_container.style.zIndex = S.styleToNum(win_elems[i].elem_container.style.zIndex)[0] - 1;
+                            }
+
+                        }
+                        newWin.elem_container.style.zIndex = 1000 + win_elems.length;
+
+                    });
+
                 //Tab buttons
                 if(newWin.close_btn_flag) {
                     newWin.elem_close_btn = S(S("$new", "div")).addClass("javasnake-winmgr-tab-btn-close").html("&times;")[0];
                     S(newWin.elem_close_btn)
-                        .onClick(function () {
-                            S(newWin.elem_container).remove();
-                            for(var i=0; i<win_elems.length; i++){
-                                if(win_elems[i] === newWin){
-                                    win_elems.splice(i,1);
-                                    break;
-                                }
-                            }
-                            if(win_elems.length === 0){
-                                S(winmgr_overlay.element).remove();
-                                winmgr_overlay.element = null;
-                                winmgr_overlay.showFlag = false;
-                            }
-                        });
+                        .onClick(newWin.close);
                     newWin.elem_tab.appendChild(newWin.elem_close_btn);
                 }
                 if(newWin.maximize_btn_flag){
                     newWin.elem_maximize_btn = S(S("$new","div")).addClass("javasnake-winmgr-tab-btn-max").html("[-]")[0];
                     S(newWin.elem_maximize_btn)
-                        .onClick(function(){
-
-                            if(!newWin.maximized) {//MAXimize it
-                                S(newWin.elem_container)
-                                    .c$$("top: 0;left: 0");
-                                S(newWin.elem_body)
-                                    .css({
-                                        width: "100vw",
-                                        height: "100vh"
-                                    });
-                                newWin.moveAble = false;
-                                newWin.elem_maximize_btn.innerHTML = "]-[";
-                            } else {//MINimize it
-                                S(newWin.elem_container)
-                                    .css({
-                                        top: newWin.not_maximize_top + "px",
-                                        left: newWin.not_maximize_left + "px",
-                                        right: " ",
-                                        bottom: " "
-                                    });
-                                S(newWin.elem_body)
-                                    .css({
-                                        width: newWin.win_width + "px",
-                                        height: newWin.win_height + "px"
-                                    });
-                                newWin.moveAble = true;
-                                newWin.elem_maximize_btn.innerHTML = "[-]";
-                            }
-                            newWin.maximized = !newWin.maximized;
-
-                        });
+                        .onClick(newWin.maximize);
                     newWin.elem_tab.appendChild(newWin.elem_maximize_btn);
                 }
 
@@ -125,7 +164,7 @@ var sjs_winmgr = (function(){
                         }
                         for(var i=0; i<win_elems.length; i++){
 
-                            if(win_elems[i] != newWin &&
+                            if(win_elems[i] !== newWin &&
                                 S.styleToNum(win_elems[i].elem_container.style.zIndex)[0] > S.styleToNum(newWin.elem_container.style.zIndex)[0]){
                                 win_elems[i].elem_container.style.zIndex = S.styleToNum(win_elems[i].elem_container.style.zIndex)[0] - 1;
                             }
@@ -134,39 +173,9 @@ var sjs_winmgr = (function(){
                         newWin.elem_container.style.zIndex = 1000 + win_elems.length;
                     })
                     .onDblClick(function(){
-
                         if(newWin.maximize_btn_flag) {
-
-                            if (!newWin.maximized) {//MAXimize it
-                                S(newWin.elem_container)
-                                    .c$$("top: 0;left: 0");
-                                S(newWin.elem_body)
-                                    .css({
-                                        width: "100vw",
-                                        height: "100vh"
-                                    });
-                                newWin.moveAble = false;
-                                newWin.elem_maximize_btn.innerHTML = "]-[";
-                            } else {//MINimize it
-                                S(newWin.elem_container)
-                                    .css({
-                                        top: newWin.not_maximize_top + "px",
-                                        left: newWin.not_maximize_left + "px",
-                                        right: " ",
-                                        bottom: " "
-                                    });
-                                S(newWin.elem_body)
-                                    .css({
-                                        width: newWin.win_width + "px",
-                                        height: newWin.win_height + "px"
-                                    });
-                                newWin.moveAble = true;
-                                newWin.elem_maximize_btn.innerHTML = "[-]";
-                            }
-                            newWin.maximized = !newWin.maximized;
-
+                            newWin.maximize();
                         }
-
                     });
                 newWin.elem_tab.appendChild(newWin.elem_title);
 
@@ -187,7 +196,7 @@ var sjs_winmgr = (function(){
 
                         for(var i=0; i<win_elems.length; i++){
 
-                            if(win_elems[i] != newWin &&
+                            if(win_elems[i] !== newWin &&
                                 S.styleToNum(win_elems[i].elem_container.style.zIndex)[0] > S.styleToNum(newWin.elem_container.style.zIndex)[0]){
                                 win_elems[i].elem_container.style.zIndex = S.styleToNum(win_elems[i].elem_container.style.zIndex)[0] - 1;
                             }
@@ -197,6 +206,11 @@ var sjs_winmgr = (function(){
 
                     })
                     .c$$("z-index: " + (1000 + win_elems.length));
+
+                if(newWin.resizable_flag){
+                    S(newWin.elem_container)
+                        .appendChild(newWin.elem_resize_point, true);
+                }
 
                 if(typeof newWin.win_x === "string") {
 
@@ -290,18 +304,22 @@ var sjs_winmgr = (function(){
         };
     S(document)
         .onMouseUp(function(){
-
-        //Remove all coordinates
-        first_mousedown_x = null;
-        first_mousedown_y = null;
-        first_win_x = null;
-        first_win_y = null;
-        tab_mousedown = false;
-        current_win = null;
-
+            //Remove all coordinates
+            first_mousedown_x = null;
+            first_mousedown_y = null;
+            first_win_x = null;
+            first_win_right = null;
+            first_win_y = null;
+            first_win_bottom = null;
+            first_win_width = null;
+            first_win_height = null;
+            tab_mousedown = false;
+            resize_mousedown = false;
+            current_win = null;
     })
+        //For moving window
         .onMouseMove(function(event){
-        if(tab_mousedown && current_win.moveAble) {
+        if(tab_mousedown && current_win.movable_flag) {
 
             var newLeft = first_win_x + (event.clientX - first_mousedown_x),
                 newTop = first_win_y + (event.clientY - first_mousedown_y),
@@ -349,7 +367,23 @@ var sjs_winmgr = (function(){
             current_win.not_maximize_left = S.styleToNum(S.realStyle(current_win.elem_container,"left",null))[0];
 
         }
-    },false);
+        if(resize_mousedown && current_win.resizable_flag){
+
+            var newWidth = first_win_width + (event.clientX - first_mousedown_x),
+                newHeight = first_win_height + (event.clientY - first_mousedown_y);
+            newWidth = (newWidth < 250)? 250:newWidth;
+            newHeight = (newHeight < 100)? 100:newHeight;
+
+            S(current_win.elem_body)
+                .css({
+                    width: newWidth + "px",
+                    height: newHeight + "px"
+                });
+            current_win.win_width = S.styleToNum(S.realStyle(current_win.elem_body,"width",null))[0];
+            current_win.win_height = S.styleToNum(S.realStyle(current_win.elem_body,"height",null))[0];
+
+        }
+    },true);
     S(window)
         .onResize(function(){
 
