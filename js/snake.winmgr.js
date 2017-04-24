@@ -35,8 +35,12 @@ var sjs_winmgr = (function(){
                 newWin.maximized = false;
 
                 //User options
-                newWin.win_width = (opts && typeof opts.width === "number")? opts.width:250;
-                newWin.win_height = (opts && typeof opts.height === "number")? opts.height:100;
+                newWin.max_width = (opts && typeof opts.maxWidth === "number" && opts.maxWidth <= S.getViewportSize()[0])? opts.maxWidth:S.getViewportSize()[0];
+                newWin.max_height = (opts && typeof opts.maxHeight === "number" && opts.maxHeight <= S.getViewportSize()[1])? opts.maxHeight:S.getViewportSize()[1];
+                newWin.min_width = (opts && typeof opts.minWidth === "number" && opts.minWidth >= 250)? opts.minWidth:250;
+                newWin.min_height = (opts && typeof opts.minHeight === "number" && opts.minHeight >= 100)? opts.minHeight:100;
+                newWin.win_width = (opts && typeof opts.width === "number")? opts.width:newWin.min_width;
+                newWin.win_height = (opts && typeof opts.height === "number")? opts.height:newWin.min_height;
                 newWin.win_dir = (opts && typeof opts.dir === "string")? opts.dir:"ltr";
                 newWin.win_x = (opts && typeof opts.x)? opts.x:null;
                 newWin.win_y = (opts && typeof opts.y)? opts.y:null;
@@ -70,7 +74,8 @@ var sjs_winmgr = (function(){
                                 width: "100vw",
                                 height: "100vh"
                             });
-                        newWin.moveAble = false;
+                        S(newWin.elem_resize_point)
+                            .c$$("display: none");
                         newWin.elem_maximize_btn.innerHTML = "]-[";
                     } else {//MINimize it
                         S(newWin.elem_container)
@@ -85,7 +90,8 @@ var sjs_winmgr = (function(){
                                 width: newWin.win_width + "px",
                                 height: newWin.win_height + "px"
                             });
-                        newWin.moveAble = true;
+                        S(newWin.elem_resize_point)
+                            .c$$("display: block");
                         newWin.elem_maximize_btn.innerHTML = "[-]";
                     }
                     newWin.maximized = !newWin.maximized;
@@ -183,7 +189,11 @@ var sjs_winmgr = (function(){
                     .addClass("javasnake-winmgr-body")
                     .c$$({
                         width: newWin.win_width + "px",
-                        height: newWin.win_height + "px"
+                        height: newWin.win_height + "px",
+                        maxWidth: newWin.max_width + "px",
+                        maxHeight: newWin.max_height + "px",
+                        minWidth: newWin.min_width + "px",
+                        minHeight: newWin.min_height + "px"
                     })[0].appendChild(
                         S(newWin.elem_inner_body)
                             .css({
@@ -319,7 +329,7 @@ var sjs_winmgr = (function(){
     })
         //For moving window
         .onMouseMove(function(event){
-        if(tab_mousedown && current_win.movable_flag) {
+        if(tab_mousedown && current_win.movable_flag && !current_win.maximized) {
 
             var newLeft = first_win_x + (event.clientX - first_mousedown_x),
                 newTop = first_win_y + (event.clientY - first_mousedown_y),
@@ -367,12 +377,10 @@ var sjs_winmgr = (function(){
             current_win.not_maximize_left = S.styleToNum(S.realStyle(current_win.elem_container,"left",null))[0];
 
         }
-        if(resize_mousedown && current_win.resizable_flag){
+        if(resize_mousedown && current_win.resizable_flag && !current_win.maximized){
 
             var newWidth = first_win_width + (event.clientX - first_mousedown_x),
                 newHeight = first_win_height + (event.clientY - first_mousedown_y);
-            newWidth = (newWidth < 250)? 250:newWidth;
-            newHeight = (newHeight < 100)? 100:newHeight;
 
             S(current_win.elem_body)
                 .css({

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Test library</title>
     <link rel="stylesheet" type="text/css" href="css/snake.winmgr.css" />
-    <script type="text/javascript" src="js/Snake.js" ></script>
+    <script type="text/javascript" src="js/snake.min.js" ></script>
     <script type="text/javascript" src="js/snake.winmgr.js" ></script>
     <script type="text/javascript" >
 
@@ -14,26 +14,28 @@
             .add({
                 overlay: true,
                 resizable: true,
-                x: "center",
-                y: "center",
-                width: 500,
-                height: 360,
-                maximizeBtn: true
+                movable: true,
+                x: "center",//left - center - right - [pixNumber]
+                y: "center",//top - center - bottom - [pixNumber]
+                width: 500, //[pixNumber]
+                height: 360,//[pixNumber]
+                maxWidth: 600,
+                maxHeight: 400,
+                minWidth: 400,
+                minHeight: 300,
+                closeBtn: true,
+                maximizeBtn: false,
+                dir: "ltr"
             })
             .content({
-                title:'salam',
-                body:'khoobi?'
+                title:'Content of Window Title',
+                body:'The Text in Window Content ...'
             });
 
 		
 	});
 	
 	</script>
-	<style>
-	
-	
-	
-	</style>
 </head>
 <body>
 
