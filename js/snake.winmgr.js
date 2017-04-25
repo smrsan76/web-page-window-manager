@@ -82,8 +82,8 @@ var sjs_winmgr = (function(){
                             .css({
                                 top: newWin.not_maximize_top + "px",
                                 left: newWin.not_maximize_left + "px",
-                                right: " ",
-                                bottom: " "
+                                right: "auto",
+                                bottom: "auto"
                             });
                         S(newWin.elem_body)
                             .css({
@@ -339,12 +339,12 @@ var sjs_winmgr = (function(){
             if(newRight > 0) {
                 S(current_win.elem_container).css({
                     left: (newLeft < 0) ? 0 : newLeft + "px",
-                    right: "auto"
+                    //right: "auto"
                 });
             } else {
                 S(current_win.elem_container).css({
-                    left: "auto",
-                    right: "0px"
+                    left: (S.getViewportSize()[0] - S.styleToNum(S.realStyle(current_win.elem_container,"width",null))[0]) + "px"
+                    //,right: "0px"
                 });
                 if(
                     S.styleToNum(S.realStyle(current_win.elem_container,"left",null))[0] <= 0
@@ -356,13 +356,13 @@ var sjs_winmgr = (function(){
             }
             if(newBottom > 0) {
                 S(current_win.elem_container).css({
-                    top: (newTop < 0) ? 0 : newTop + "px",
-                    bottom: "auto"
+                    top: (newTop < 0) ? 0 : newTop + "px"
+                    //,bottom: "auto"
                 });
             } else {
                 S(current_win.elem_container).css({
-                    top: "auto",
-                    bottom: "0px"
+                    top: (S.getViewportSize()[1] - S.styleToNum(S.realStyle(current_win.elem_container,"height",null))[0]) + "px"
+                    //,bottom: "0px"
                 });
                 if(
                     S.styleToNum(S.realStyle(current_win.elem_container,"top",null))[0] <= 0
@@ -407,13 +407,13 @@ var sjs_winmgr = (function(){
                     if( leftPos > 0 ) {
                         S(win_elems[i].elem_container)
                             .css({
-                                right: "0px",
+                                //right: "0px",
                                 left: leftPos + rightPos + "px"
                             });
                     } else {
                         S(win_elems[i].elem_container)
                             .css({
-                                right: "0px",
+                                //right: "0px",
                                 left: "0px"
                             });
                     }
@@ -431,13 +431,13 @@ var sjs_winmgr = (function(){
                     if( topPos > 0 ) {
                         S(win_elems[i].elem_container)
                             .css({
-                                bottom: "0px",
+                                //bottom: "0px",
                                 top: topPos + bottomPos + "px"
                             });
                     } else {
                         S(win_elems[i].elem_container)
                             .css({
-                                bottom: "0px",
+                                //bottom: "0px",
                                 top: "0px"
                             });
                     }
