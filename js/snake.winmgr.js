@@ -72,7 +72,9 @@ var sjs_winmgr = (function(){
                         S(newWin.elem_body)
                             .css({
                                 width: "100vw",
-                                height: "100vh"
+                                height: "100vh",
+                                maxWidth: "100vw",
+                                maxHeight: "100vh"
                             });
                         S(newWin.elem_resize_point)
                             .c$$("display: none");
@@ -88,7 +90,9 @@ var sjs_winmgr = (function(){
                         S(newWin.elem_body)
                             .css({
                                 width: newWin.win_width + "px",
-                                height: newWin.win_height + "px"
+                                height: newWin.win_height + "px",
+                                maxWidth: newWin.max_width + "px",
+                                maxHeight: newWin.max_height + "px"
                             });
                         S(newWin.elem_resize_point)
                             .c$$("display: block");
