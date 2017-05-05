@@ -42,8 +42,8 @@ var sjs_winmgr = (function(){
                 newWin.win_width = (opts && typeof opts.width === "number")? opts.width:newWin.min_width;
                 newWin.win_height = (opts && typeof opts.height === "number")? opts.height:newWin.min_height;
                 newWin.win_dir = (opts && typeof opts.dir === "string")? opts.dir:"ltr";
-                newWin.win_x = (opts && typeof opts.x)? opts.x:null;
-                newWin.win_y = (opts && typeof opts.y)? opts.y:null;
+                newWin.win_x = (opts && (typeof opts.x === "string" || typeof opts.x === "number"))? opts.x:null;
+                newWin.win_y = (opts && (typeof opts.y === "string" || typeof opts.y === "number"))? opts.y:null;
                 newWin.close_btn_flag = (opts && typeof opts.closeBtn === "boolean")? opts.closeBtn:true;
                 newWin.maximize_btn_flag = (opts && typeof opts.maximizeBtn === "boolean")? opts.maximizeBtn:false;
                 winmgr_overlay.showFlag = (opts && typeof opts.overlay === "boolean")? opts.overlay:false;
