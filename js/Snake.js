@@ -10,161 +10,161 @@
  */
 //Start Of javaSnake In Function Mode
 var jSnake = (function(slct, index){
-	
+
 	//javaSnake Main Variables
 	/*var JS_MAIN_Something....
 	*/
-	
+
 	//Main SELECTOR Funciton
 	"use strict";
 	return  function(slct, index){
-		
+
 		/*DANGER*/
 		var S = []; /*Main Variable For Functions & Matched Elements !!!*/
-		
+
 		if(typeof slct === 'string'){
-			
+
 			var slct2 = slct.toLowerCase();
-			
+
 			if(slct2.search(/^(\s*[\$])/) === -1){
-				
+
 				var temp = document.querySelectorAll(slct);//Using Temp For Read-Only Properties
 				for(var i=0; i<temp.length; i++){ S.push(temp[i]); }//Make Them ReWritable !!!
-				
+
 			} else {
-				
+
 				/*
 				 *	Commands Of 'SELECTOR'() Function !
 				 */
-				
+
 				switch(slct2.replace(/([\s]+(?=[\S]+))|([\s]+(?![\S]+))/gim,'')){
-					
+
 					case '$ajax':
-						
+
 						S.push(readyAjax_());
-						
+
 						// Ajax Functions //
-						
+
 						S.getAjax = function(){ return S[0]; };
 						S.open = function(type,url,sync){
-							
+
 							if(typeof type === 'string' && typeof url === 'string' && typeof sync === 'boolean'){
-								
+
 								S[0].open(type,url,sync);
 								return S;//Continue Developing
-								
+
 							} else {
-								
+
 								throw Error("javaSnake_ajax: Check Your Ajax Code\nTypeOf open() Function Arguments Are Wrong !");
-								
+
 							}
-							
+
 						};
 						S.get = function(url,sync){
-							
+
 							if(typeof url === 'string' && typeof sync === 'boolean'){
-								
+
 								S[0].open("GET",url,sync);
 								return S;//Continue Developing
-								
+
 							} else {
-								
+
 								throw Error("javaSnake_ajax: Check Your Ajax Code\nTypeOf get() Function Argument(s) Are Wrong !");
-								
+
 							}
-							
+
 						};
 						S.post = function(url,sync){
-							
-							
+
+
 							if(typeof url === 'string' && typeof sync === 'boolean'){
-								
+
 								S[0].open("POST",url,sync);
 								return S;//Continue Developing
-								
+
 							} else {
-								
+
 								throw Error("javaSnake_ajax: Check Your Ajax Code\nTypeOf post() Function Arguments Are Wrong !");
 							}
-							
+
 						};
 						S.send = function(values){
-							
+
 							if(values === undefined){
-								
+
 								S[0].send();
-								
+
 							} else {
 								if(typeof values === 'string'){
-									
+
 									S[0].send(values);
-									
+
 								} else {
-									
+
 									throw Error("javaSnake_ajax: Check Your Ajax Code\nPut String Value In send() Function !");
-									
+
 								}
 							}
 							return S;//Continue Developing
-							
+
 						};
 						S.readyChange = function(func){
-							
+
 							if(typeof func === 'function'){
 								S[0].onreadystatechange = func;
 								return S;//Continue Developing
 							} else {
-								
+
 								throw Error("javaSnake_ajax: Check Your Ajax Code\nPut A Function Value In readyChange() Function !");
-								
+
 							}
-							
+
 						};
 						S.isDone = function(){
-							
+
 							return (S[0].readyState === (XMLHttpRequest.DONE || ActiveXObject.DONE));
-							
+
 						};
 						S.reqHead = function(property,value){
-							
+
 							if(typeof property === 'string' && typeof value === 'string'){
-								
+
 								S[0].setRequestHeader(property,value);
-								
+
 							} else {
-								
+
 								throw Error("javaSnake_ajax: Check Your Ajax Code\nPut String Values In Both Arguments Of reqHead() Function !");
-								
+
 							}
-							
+
 						};
 						S.readyState = function(){
-							
+
 							return S[0].readyState;
-							
+
 						};
 						S.status = function(){
-							
+
 							return S[0].status;
-							
+
 						};
 						S.statusTxt = function(){
-							
+
 							return S[0].statusText;
-							
+
 						};
 						S.respTxt = function(){
-							
+
 							return S[0].responseText;
-							
+
 						};
 						S.respXml = function(){
-							
+
 							return S[0].responseXML;
-							
+
 						};
 						//End Of Ajax Functions
-						
+
 					return S; //End Of {$ajax} Command
 					case '$about':
 					return {
@@ -182,54 +182,54 @@ var jSnake = (function(slct, index){
 					case '$reg':
 					return new RegExp((index !== undefined)? index:null); //End Of {$reg} Command
 					case '$new':
-						
+
 						if(typeof index === 'string'){
-							
+
 							try{
-								
+
 								return document.createElement(index);
-								
+
 							} catch(e) {
-								
+
 								throw Error("javaSnake_S_{$new}: Enter A Valid String For Name Of New Element In The Second Argument Of 'SELECTOR'() Function !");
-								
+
 							}
-							
+
 						} else if(typeof index === 'object'){
-							
+
 							try{
-								
+
 								return index.cloneNode(true);
-								
+
 							} catch(e) {
-								
+
 								throw Error("javaSnake_S_{$new}: The Object That You Put In The Second Argument Of 'SELECTOR'() Function\nWas Not A DOMObject !");
-								
+
 							}
-							
+
 						} else {
-							
+
 							throw Error("javaSnake_S_{$new}: Put String/DOMObject In The Second Argument Of 'SELECTOR'() Function !");
-							
+
 						}
-						
+
 					break; //End Of {$new} Command
 					//***************Develop It !***************
 					//You Can Also Make Your Own Commands Here !
-					
+
 				}
-				
+
 			}
-			
+
 		} else if(slct.length){ //If General Array//
-			
+
 			for(var i=0; i<slct.length; i++){ //Selects Elements In General Array
-				
+
 				if(typeof slct[i] === 'string'){ //If String In General Array
-					
+
 					var slctTemp = "";
 						slctTemp += slct[i];
-					
+
 					if(i === (slct.length-1) && slct.length > 1 && slctTemp.search(/[$\$]/) !== -1){
 						slct[i] = slct[i].toLowerCase();
 						switch (slct[i]){
@@ -267,22 +267,22 @@ var jSnake = (function(slct, index){
 							S.push(temp[j]);
 						}
 					}
-					
+
 				} else if(slct[i].length){ //If Array In General Array
-					
+
 					var elems = [];
-						
+
 					for(var j=0; j<slct[i].length; j++){ //Each Selects
-					
+
 						var selects = slct[i][j];
-						
+
 						if(j === (slct[i].length-1) && slct[i].length > 1){
-							
+
 							if(typeof selects === 'string'){ //If Ender String
-								
+
 								var selects_Temp = "";
 									selects_Temp += selects;
-								
+
 								if(selects_Temp.search(/[$\$]/) !== -1){//If An Ender Command
 									selects = selects.toLowerCase();
 									switch (selects){
@@ -319,16 +319,16 @@ var jSnake = (function(slct, index){
 										break;
 									}
 								} else {
-									
+
 									//Just Selects That
 									selects = document.querySelectorAll(selects);
 									for(var k=0; k<selects.length; k++){
 										elems.push(selects[k]);
 									}
 									for(var k=0; k<elems.length; k++){ S.push(elems[k]); } //Push Elements In S
-									
+
 								}
-								
+
 							} else if(typeof selects === 'object'){ //If Ender Object
 								elems.push(selects);
 								for(var k=0; k<elems.length; k++){ S.push(elems[k]); } //Push Elements In S
@@ -353,164 +353,164 @@ var jSnake = (function(slct, index){
 								else S.push(selects);
 							}
 						}
-						
+
 					}
-					
+
 				} else if(typeof slct[i] === 'object'){ //If Object In General Array
 					S.push(slct[i]);
 				} else {
 					S = [S[Number(slct[i])]];
 				}
-				
+
 			}
-			
+
 		} else if(typeof slct === 'function'){
-			
+
 			window.jSnake.addEvent(slct, "load", window, false);
-			
+
 		} else if(typeof slct === 'object'){
-			
+
 			//DANGER > DO NOT MODIFY HERE !!!
 			//  IF YOU LOST BETWEEN CODES !!!
-			
+
 			if(slct.setRequestHeader){ //This Is An Ajax Object > AJAX Object Mode
-				
+
 				S = [slct];
-						
+
 				// Ajax Functions //
-				
+
 				S.getAjax = function(){ return S[0]; };
 				S.open = function(type,url,sync){
-					
+
 					if(typeof type === 'string' && typeof url === 'string' && typeof sync === 'boolean'){
-						
+
 						S[0].open(type,url,sync);
 						return S;//Continue Developing
-						
+
 					} else {
-						
+
 						throw Error("javaSnake_ajax: Check Your Ajax Code\nTypeOf open() Function Arguments Are Wrong !");
-						
+
 					}
-					
+
 				};
 				S.get = function(url,sync){
-					
+
 					if(typeof url === 'string' && typeof sync === 'boolean'){
-						
+
 						S[0].open("GET",url,sync);
 						return S;//Continue Developing
-						
+
 					} else {
-						
+
 						throw Error("javaSnake_ajax: Check Your Ajax Code\nTypeOf get() Function Argument(s) Are Wrong !");
-						
+
 					}
-					
+
 				};
 				S.post = function(url,sync){
-					
-					
+
+
 					if(typeof url === 'string' && typeof sync === 'boolean'){
-						
+
 						S[0].open("POST",url,sync);
 						return S;//Continue Developing
-						
+
 					} else {
-						
+
 						throw Error("javaSnake_ajax: Check Your Ajax Code\nTypeOf post() Function Arguments Are Wrong !");
 					}
-					
+
 				};
 				S.send = function(values){
-					
+
 					if(values === undefined){
-						
+
 						S[0].send();
-						
+
 					} else {
 						if(typeof values === 'string'){
-							
+
 							S[0].send(values);
-							
+
 						} else {
-							
+
 							throw Error("javaSnake_ajax: Check Your Ajax Code\nPut String Value In send() Function !");
-							
+
 						}
 					}
 					return S;//Continue Developing
-					
+
 				};
 				S.readyChange = function(func){
-					
+
 					if(typeof func === 'function'){
-						
+
 						S[0].onreadystatechange = func;
 						return S;//Continue Developing
-						
+
 					} else {
-						
+
 						throw Error("javaSnake_ajax: Check Your Ajax Code\nPut A Function Value In readyChange() Function !");
-						
+
 					}
-					
+
 				};
 				S.isDone = function(){
-					
+
 					return (S[0].readyState === (XMLHttpRequest.DONE || ActiveXObject.DONE));
-					
+
 				};
 				S.reqHead = function(property,value){
-					
+
 					if(typeof property === 'string' && typeof value === 'string'){
-						
+
 						S[0].setRequestHeader(property,value);
-						
+
 					} else {
-						
+
 						throw Error("javaSnake_ajax: Check Your Ajax Code\nPut String Values In Both Arguments Of reqHead() Function !");
-						
+
 					}
-					
+
 				};
 				S.readyState = function(){
-					
+
 					return S[0].readyState;
-					
+
 				};
 				S.status = function(){
-					
+
 					return S[0].status;
-					
+
 				};
 				S.statusTxt = function(){
-					
+
 					return S[0].statusText;
-					
+
 				};
 				S.respTxt = function(){
-					
+
 					return S[0].responseText;
-					
+
 				};
 				S.respXml = function(){
-					
+
 					return S[0].responseXML;
-					
+
 				};
 				//End Of Ajax Functions
-		
+
 				return S;
-		
+
 			} else { //Normal DOMObject Mode
-				
+
 				S = [slct];
-				
+
 			}
-			
+
 		}
-		
+
 		if(index !== undefined){ //Check General Index Adjustment
 			if(typeof index === 'string'){
 				index = index.toLowerCase();
@@ -547,15 +547,15 @@ var jSnake = (function(slct, index){
 				S = [S[index]];
 			}
 		}
-		
-		
+
+
 		var ARRAY = []; //
 		S.splice  = ARRAY.splice; //
 		S.split   = ARRAY.split ; // REDEFINE TO TRUST
 		S.push    = ARRAY.push  ; //
 		////////////////////////////
-		
-		
+
+
 		//Start Of Function Variables
 		S.c$$ = function (){
 		/*
@@ -563,7 +563,7 @@ var jSnake = (function(slct, index){
 		 *	For Easier Style
 		 *	In JavaScript
 		 */
-		
+
 			var props = [],
 				vals  = [],
 				returnProp = null;
@@ -573,23 +573,23 @@ var jSnake = (function(slct, index){
 			for(var j=0; j<arguments.length; j++){ //ForEach Argument
 				var style = arguments[j];
 				if(typeof style == 'string'){ //If String Style
-					
+
 					var arr = style.split(/[\:|;]/g);
 					for(var i=0; i<arr.length; i += 2) props.push(arr[i].replace(/ /g,""));
 					for(var i=1; i<arr.length; i += 2) vals.push(arr[i]);
-					
+
 				} else if(typeof style == 'object'){ //If Object Style
 					for(var i=0; i<S.length; i++){
 						for(var myStyleName in style){
 							if(myStyleName in S[i].style){
-								
+
 								if(style[myStyleName].toLowerCase().trim() == "$get"){//Get Property Command
 									returnProp = S[i].style[myStyleName];
 									continue;
 								}
-								
+
 								S[i].style[myStyleName] = style[myStyleName];
-								
+
 							}
 						}
 					}
@@ -598,26 +598,26 @@ var jSnake = (function(slct, index){
 			/*
 			 *	Do Styles On Each Elements
 			 */
-			
+
 			for(var j=0; j<props.length; j++){   //ForEach Style
 				for(var i=0; i<this.length; i++){ //ForEach Element
-					
+
 					props[j] = props[j].toLowerCase();
-					
+
 					var p = window.jSnake.styleToJs(props[j]);
-					
+
 					if(vals[j].toLowerCase().trim() === "$get"){//Get Property Command
-						
+
 						returnProp = S[i].style[p];
 						continue;
-						
+
 					}
-					
+
 					if(p in this[i].style) this[i].style[p] = vals[j];
-					
+
 				}
 			}
-			
+
 			return (returnProp != null)? returnProp:S;/*Continue Developing !!!*/
 		};
 		S.css = function (){
@@ -625,51 +625,51 @@ var jSnake = (function(slct, index){
 		 *	Function For Set Some Style (Like jQuery Library)
 		 */
 			for(var g=0; g<arguments.length; g++){
-				
+
 				if(typeof arguments[g] === 'object'){
-					
+
 					var styleObj = arguments[g];
-					
+
 					for(var i=0; i<S.length; i++){
-						
+
 						for(var myStyleName in styleObj){
-							
+
 							if(myStyleName in S[i].style){
-								
+
 								S[i].style[myStyleName] = styleObj[myStyleName];
-								
+
 							}
-							
+
 						}
-						
+
 					}
-					
+
 				} else if(typeof arguments[g] === 'string'){
-					
+
 					if(typeof arguments[g+1] === 'string'){
-						
+
 						if(arguments[g] in this[0].style){
-							
+
 							for(var i=0; i<this.length; i++){
-								
+
 								this[i].style[arguments[g]] = arguments[g+1];
 								g++;
 							}
-							
+
 						}
-						
+
 					} else {
-						
+
 						if(arguments[g] in this[0].style){
-							
+
 							return this[0].style[arguments[g]];
-							
+
 						}
-						
+
 					}
-					
+
 				}
-				
+
 			}
 			return S; /*Continue Developing !!!*/
 		};
@@ -685,10 +685,10 @@ var jSnake = (function(slct, index){
 		/*
 		 *	Function For AppendChild To Selected Elements
 		 */
-			
+
 			var appendedChilds = [];
 			dontCopy = (dontCopy === undefined)? false:dontCopy;
-			
+
 			switch(typeof element){
 				case 'object':
 				    if(!dontCopy) {//Use cloneNode
@@ -719,30 +719,30 @@ var jSnake = (function(slct, index){
 					}
 				break;
 			}
-			
+
 			if(pushFlag === undefined) pushFlag = false;
-			
+
 			if(pushFlag){
 				S.splice(0,this.length);
 				for(var i=0; i<appendedChilds.length; i++)
 					S.push(appendedChilds[i]);
 			}
-			
+
 			return S; /*Continue Developing !!!*/
 		};
 		S.before = function (element,pushFlag){
 		/*
 		 *	Function For insertAfter Of Selected Elements
 		 */
-			
+
 			if(pushFlag === undefined) pushFlag = false;
-			
+
 			var pushedElems = [];
-			
+
 			switch(typeof element){
-				
+
 				case 'object':
-					
+
 					try{
 						if(element.length){//IF ARRAY
 							for(var j=0; j<element.length; j++){
@@ -752,12 +752,12 @@ var jSnake = (function(slct, index){
 									if(pushFlag) pushedElems.push(copy);
 								}
 							}
-							
+
 							if(pushFlag){
 								S.splice(0,this.length);
 								for(var i=0; i<pushedElems.length; i++) S.push(pushedElems[i]);
 							}
-							
+
 							return S; /*Continue Developing !!!*/
 						} else {//IF OBJECT
 							for(var i=0; i<this.length; i++){
@@ -765,60 +765,60 @@ var jSnake = (function(slct, index){
 								this[i].parentNode.insertBefore(copy, this[i]);
 								if(pushFlag) pushedElems.push(copy);
 							}
-							
+
 							if(pushFlag){
 								S.splice(0,this.length);
 								for(var i=0; i<pushedElems.length; i++) S.push(pushedElems[i]);
 							}
-							
+
 							return S; /*Continue Developing !!!*/
 						}
 					} catch(e) {
-						
+
 						throw Error("javaSnake: Put DOMObject In before() Function !");
-						
+
 					}
-					
+
 				break;
 				case 'string':
-					
+
 					element = document.createTextNode(element);
-					
+
 					for(var i=0; i<this.length; i++){
 						var copy = element.cloneNode(true);
 						this[i].parentNode.insertBefore(copy, this[i]);
 						if(pushFlag) pushedElems.push(copy);
 					}
-					
+
 					if(pushFlag){
 						S.splice(0,this.length);
 						for(var i=0; i<pushedElems.length; i++) S.push(pushedElems[i]);
 					}
-					
+
 					return S; /*Continue Developing !!!*/
-					
+
 				break;
 				default:
-					
+
 					throw Error("javaSnake: Put DOMObject Or String Value In before() Function !");
-					
+
 				break;
-				
+
 			}
 		};
 		S.after = function (element,pushFlag){
 		/*
 		 *	Function For insertAfter Of Selected Elements
 		 */
-			
+
 			if(pushFlag === undefined) pushFlag = false;
-			
+
 			var pushedElems = [];
-			
+
 			switch(typeof element){
-				
+
 				case 'object':
-					
+
 					try{
 						if(element.length){//IF ARRAY
 							for(var j=0; j<element.length; j++){
@@ -837,12 +837,12 @@ var jSnake = (function(slct, index){
 									}
 								}
 							}
-							
+
 							if(pushFlag){
 								S.splice(0,this.length);
 								for(var i=0; i<pushedElems.length; i++) S.push(pushedElems[i]);
 							}
-							
+
 							return S; /*Continue Developing !!!*/
 						} else {//IF OBJECT
 							for(var i=0; i<this.length; i++){
@@ -859,25 +859,25 @@ var jSnake = (function(slct, index){
 									}
 								}
 							}
-							
+
 							if(pushFlag){
 								S.splice(0,this.length);
 								for(var i=0; i<pushedElems.length; i++) S.push(pushedElems[i]);
 							}
-							
+
 							return S; /*Continue Developing !!!*/
 						}
 					} catch(e) {
-						
+
 						throw Error("javaSnake: Put DOMObject Value In after() Function !");
-						
+
 					}
-					
+
 				break;
 				case 'string':
-					
+
 					element = document.createTextNode(element);
-					
+
 					for(var i=0; i<this.length; i++){
 						var copy = element.cloneNode(true);
 						if(pushFlag) pushedElems.push(copy);
@@ -892,21 +892,21 @@ var jSnake = (function(slct, index){
 							}
 						}
 					}
-					
+
 					if(pushFlag){
 						S.splice(0,this.length);
 						for(var i=0; i<pushedElems.length; i++) S.push(pushedElems[i]);
 					}
-					
+
 					return S; /*Continue Developing !!!*/
-					
+
 				break;
 				default:
-					
+
 					throw Error("javaSnake: Put DOMObject Or String Value In after() Function !");
-					
+
 				break;
-				
+
 			}
 		};
 		S.indexOfThese = function(){
@@ -914,7 +914,7 @@ var jSnake = (function(slct, index){
 		 *	Function For Getting Index Of An Element
 		 */
 			var indexArr = [];
-			
+
 			for(var i=0; i<this.length; i++){
 				var indexNum = 0;
 				var temp = null;
@@ -928,7 +928,7 @@ var jSnake = (function(slct, index){
 				}
 				indexArr.push(indexNum);
 			}
-			
+
 			return indexArr;
 		};
 		S.html = function (html, continueDevFlag){
@@ -950,7 +950,7 @@ var jSnake = (function(slct, index){
 		 *	Function For Setting/Getting Text(s)
 		 */
 			if(continueDevFlag === undefined){ continueDevFlag = false };
-			
+
 			if(text !== undefined){
 				for(var i=0; i<this.length; i++){
 					this[i].textContent = text;
@@ -971,13 +971,13 @@ var jSnake = (function(slct, index){
 		 *	Function For Setting/Getting Values(s)
 		 */
 			if(continueDevFlag === undefined){ continueDevFlag = false }
-			
+
 			if(value !== undefined){
-				
+
 				for(var i=0; i<S.length; i++){
 					S[i].value = value;
 				}
-				
+
 			} else {
 				if(!continueDevFlag){
 					return S[0].value;
@@ -991,74 +991,74 @@ var jSnake = (function(slct, index){
 		 */
 			var rtrn = null,
 				addFlag = false;
-			
+
 			if(typeof arguments[arguments.length-1] == "boolean") addFlag = arguments[arguments.length-1];
-			
+
 			for(var i=0; i<S.length; i++){/*Each Element*/
 				for(var j=0; j<arguments.length; j++){/*Each Argument*/
 					var atr = arguments[j];
 					switch(typeof atr){
 						case 'string':
-							
+
 							if(typeof arguments[j+1] == 'string'){
-								
+
 								if(addFlag){/*Current Attributes + New Attributes*/
-								
+
 									if(S[i].hasAttribute(atr)){
-										
+
 										S[i].setAttribute(atr, S[i].getAttribute(atr) + " " + arguments[j+1]);
-										
+
 									} else {
-										
+
 										S[i].setAttribute(atr, arguments[j+1]);
-										
+
 									}
-									
+
 								} else {/*Just New Attributes*/
-									
+
 									S[i].setAttribute(atr, arguments[j+1]);
-									
+
 								}
-								
+
 								j++;
-								
+
 							} else {
-								
+
 								rtrn = S[0].getAttribute(atr);
-								
+
 							}
-							
+
 						break;
 						case 'object':
-							
+
 							if(!addFlag){/*Just New Attributes*/
-								
+
 								for(var value in atr){ S[i].setAttribute(value, atr[value]); }
-								
+
 							} else {/*Current Attributes + New Attributes*/
-								
+
 								for(var value in atr){
-									
+
 									if(S[i].hasAttribute(value)){
-										
+
 										S[i].setAttribute(value, S[i].getAttribute(value) + " " + atr[value]);
-										
+
 									} else {
-										
+
 										S[i].setAttribute(value, atr[value]);
-										
+
 									}
-									
+
 								}
-								
+
 							}
-							
+
 						break;
 						case 'boolean': /*NoThing!*/ break;
 						default:
-							
+
 							throw Error("javaSnake: Enter String Or Object Value In attr() Function !");
-							
+
 						break;
 					}
 				}
@@ -1103,77 +1103,77 @@ var jSnake = (function(slct, index){
 			}
 		};
 		S.each = function(func){
-			
+
 			if(func !== undefined){
 				if(typeof func == 'function'){
 					for(var i=0; i<S.length; i++){ //Foreach Element
-						
+
 						S[i]._______F______ = func;
 						S[i]._______F______();
 						S[i]._______F______ = undefined;
-						
+
 					}
 					//for(var i=0; i<S.length; i++){ S[i].f = null }
 				} else {
-					
+
 					throw Error("javaSnake: Enter Function Value In each Function !");
-					
+
 				}
 			}
 			return S; /*Continue Developing !!!*/
 		};
 		S.get = function(num){
-			
+
 			switch(typeof num){
-				
+
 				case 'number':
-					
+
 					if(num > (S.length-1)) return S[S.length-1];
 					if(num < 0) return S[0];
 					//else
 					return S[num];
-					
+
 				break;
 				case 'string':
-					
+
 					if(typeof Number(num) == 'number'){
-						
+
 						var temp = Number(num);
-						
+
 						if(temp > (S.length-1)) return S[S.length-1];
 						if(temp < 0) return S[0];
 						//else
 						return S[temp];
-						
+
 					} else {
-						
+
 						throw Error("javaSnake: Put A String That Could Convert To Number\nIn The Argument Of get() Function !");
-						
+
 					}
-					
+
 				break;
 				case 'undefined':
-					
+
 					return S[0];
-					
+
 				break;
 				default:
-					
+
 					throw Error("javaSnake: Put Number ,String Or Undefined Value In The Argument Of get() Function !\nThat Contains A Number .");
-					
+
 				break;
-				
+
 			}
-			
+
 		};
-		
+
 		/*///////////////////////////
 		/*	KeyBoard, Mouse, & DOM  /
 		/*	Event Functions         /
 		/*///////////////////////////
-		
-		
-		
+
+
+
 		//Mouse Events//
 		S.onMouseDown = function (func, useCapture){
 			if(useCapture === undefined){ useCapture = false; }
@@ -1210,9 +1210,9 @@ var jSnake = (function(slct, index){
 			for(var i=0; i<this.length; i++){ window.jSnake.addEvent(func, "mouseout", this[i], useCapture); }
 			return S; /*Continue Developing !!!*/
 		};
-		
-		
-		
+
+
+
 		//DOM Events//
 		S.onAbort = function (func, useCapture){
 			if(useCapture === undefined){ useCapture = false; }
@@ -1349,9 +1349,9 @@ var jSnake = (function(slct, index){
 			for(var i=0; i<this.length; i++){ window.jSnake.addEvent(func, "unload", this[i], useCapture); }
 			return S; /*Continue Developing !!!*/
 		};
-		
-		
-		
+
+
+
 		//KeyBoard Events//
 		S.onKeyDown = function (func, useCapture){
 			if(useCapture === undefined){ useCapture = false; }
@@ -1368,12 +1368,12 @@ var jSnake = (function(slct, index){
 			for(var i=0; i<this.length; i++){ window.jSnake.addEvent(func, "keypress", this[i], useCapture); }
 			return S; /*Continue Developing !!!*/
 		};
-		
+
 		//'on' Function For Multiple Or Single Events//
 		S.on = function (events, func, useCapture){
-			
+
 			if(useCapture === undefined){ useCapture = false; }//Use Capture Default
-			
+
 			if(typeof events == 'string'){ //For Each Selected Element
 				for(var i=0; i<this.length; i++){
 					window.jSnake.addEvent(func, events, this[i], useCapture);
@@ -1387,25 +1387,25 @@ var jSnake = (function(slct, index){
 			}
 			return S; /*Continue Developing !!!*/	//Add More 'Continue Developping' For Functions That They Don't Return Anything !
 		};
-		
-		
-		
+
+
+
 		/*///////////////////////////
 		/*	Add, Remove, & Toggle   /
 		/*	Class of Elements       /
 		/*///////////////////////////
-		
+
 		//Add//
 		S.addClass = function (CLASS){
 			if(typeof CLASS == 'string'){
-				
+
 				var classes = CLASS.split(' ');
-				
+
 				for(var i=0; i<this.length; i++){//For Each Element
 					for(var j=0; j<classes.length; j++){//For Each Taken ClassName
-						
+
 						this[i].classList.add(classes[j]);
-						
+
 					}
 				}
 			}
@@ -1414,14 +1414,14 @@ var jSnake = (function(slct, index){
 		//Remove//
 		S.removeClass = function (CLASS){
 			if(typeof CLASS == 'string'){
-				
+
 				var classes = CLASS.split(' ');
-				
+
 				for(var i=0; i<this.length; i++){//For Each Element
 					for(var j=0; j<classes.length; j++){//For Each Taken Class
-						
+
 						this[i].classList.remove(classes[j]);
-						
+
 					}
 				}
 			}
@@ -1430,291 +1430,291 @@ var jSnake = (function(slct, index){
 		//Toggle//
 		S.toggleClass = function (CLASS){
 			if(typeof CLASS == 'string'){
-				
+
 				var classes = CLASS.split(' ');
-				
+
 				for(var i=0; i<this.length; i++){//For Each Element
 					for(var j=0; j<classes.length; j++){//For Each Taken Class
-						
+
 						this[i].classList.toggle(classes[j]);
-						
+
 					}
 				}
 			}
 			return S; /*Continue Developing !!!*/
 		};
-		
+
 		/*///////////////////////////////
 		/*	Selects Siblings Or Index	/
 		/*	of The First Elements    	/
 		/*///////////////////////////////
-		
+
 		//Siblinger//
 		S.siblinger = function(){
-			
+
 			var elems = [];
-			
+
 			for(var g=0; g<arguments.length; g++){
-				
+
 				for(var h=0; h<S.length; h++){
-					
+
 					var id = arguments[g];
-					
+
 					if(typeof id == 'number'){ //Number Mode
-						
+
 						if(id > 0){ //Next Sibling
-							
+
 							var sibEl    = S[h],
 								sib      = S[h],
 								num      = 0,
 								pushFlag = true;
-							
+
 							while(sib.nextSibling){
-								
+
 								if(num == id) break;
-								
+
 								sib = sib.nextSibling;
-								
+
 								if(sib.nodeName != "#text"){
 									sibEl = sib;
 									num++;
 								}
-								
+
 							}
-							
+
 							for(var i=0; i<elems.length; i++) if(elems[i] == sibEl) pushFlag = false;
-							
+
 							if(pushFlag && sibEl != S[h]) elems.push(sibEl);
-							
+
 						} else if(id < 0){ //Previous Sibling
-							
+
 							var sibEl    = S[h],
 								sib      = S[h],
 								num      = 0,
 								pushFlag = true;
-							
+
 							id *= -1; //Because It's A Negative Number
-							
+
 							while(sib.previousSibling){
-								
+
 								if(num == id) break;
-								
+
 								sib = sib.previousSibling;
-								
+
 								if(sib.nodeName != "#text"){
 									sibEl = sib;
 									num++;
 								}
-								
+
 							}
-							
+
 							for(var i=0; i<elems.length; i++) if(elems[i] == sibEl) pushFlag = false;
-							
+
 							if(pushFlag && sibEl != S[h]) elems.push(sibEl);
-							
+
 						} else { //It Self
-							
+
 							var pushFlag = true;
-							
+
 							for(var i=0; i<elems.length; i++) if(elems[i] == S[h]) pushFlag = false;
-							
+
 							if(pushFlag) elems.push(S[h]);
-							
+
 						}
-						
+
 					} else if(typeof id == 'string'){ //String Mode
-						
+
 						var str = id.split(' '); //Make Selections Separate
-						
+
 						for(var k=0; k<str.length; k++){
-							
+
 							if(str[k][0] == '.'){ //Select Them By ClassName
-								
+
 								var els = [],
 									sib = S[h].parentElement.childNodes;
 								str[k] = str[k].slice(1,str[k].length); //Remove The Class Dot
-								
+
 								for(var i=0; i<sib.length; i++){
-									
+
 									if(sib[i] != S[h]){
-										
+
 										if(sib[i].nodeName != '#text'){
-										
+
 											if(sib[i].hasAttribute('class')){
-												
+
 												var cls = sib[i].getAttribute('class').split(' ');
-												
+
 												for(var j=0; j<cls.length; j++){
-													
+
 													if(str[k] == cls[j]){
-														
+
 														var pushFlag = true;
-														
+
 														//Check If It Exists In Selected Elements Array
 														for(var l=0; l<elems.length; l++) if(elems[l] == sib[i]) pushFlag = false;
-														
+
 														if(pushFlag) elems.push(sib[i]);
-														
+
 													}
-													
+
 												}
-												
+
 											}
-											
+
 										}
-										
+
 									}
-									
+
 								}
-								
+
 							} else if(str[k][0] == '#'){ //Select Them By IdName
-								
+
 								var els = [],
 									sib = S[h].parentElement.childNodes;
 								str[k] = str[k].slice(1,str[k].length); //Remove The Id Sharp
-								
+
 								for(var i=0; i<sib.length; i++){
-									
+
 									if(sib[i] != S[h]){
-										
+
 										if(sib[i].nodeName != '#text'){
-										
+
 											if(sib[i].hasAttribute('id')){
-												
+
 												var sibId = sib[i].getAttribute('id');
-												
+
 												if(sibId == str[k]){
-													
+
 													var pushFlag = true;
-													
+
 													//Check If It Exists In Selected Elemes Array
 													for(var l=0; l<elems.length; l++) if(elems[l] == sib[i]) pushFlag = false;
-													
+
 													if(pushFlag) elems.push(sib[i]);
-													
+
 												}
-												
+
 											}
-											
+
 										}
-										
+
 									}
-									
+
 								}
-								
+
 							} else {
-								
+
 								if(Number(str[k]).toString() != 'NaN'){ //It Can Be A Number
-									
+
 									var idNum = str[k];
-									
+
 									if(idNum > 0){ //Next Sibling
-										
+
 										var sibEl    = S[h],
 											sib      = S[h],
 											num      = 0,
 											pushFlag = true;
-										
+
 										while(sib.nextSibling){
-											
+
 											if(num == idNum){ break; }
-											
+
 											sib = sib.nextSibling;
-											
+
 											if(sib.nodeName != "#text"){
 												sibEl = sib;
 												num++;
 											}
-											
+
 										}
-										
+
 										for(var i=0; i<elems.length; i++) if(elems[i] == sibEl) pushFlag = false;
-										
+
 										if(pushFlag && sibEl != S[h]) elems.push(sibEl);
-										
+
 									} else if(idNum < 0){ //Previous Sibling
-										
+
 										var sibEl    = S[h],
 											sib      = S[h],
 											num      = 0,
 											pushFlag = true;
-										
+
 										idNum *= -1; //Because It's A Negative Number
-										
+
 										while(sib.previousSibling){
-											
+
 											if(num == idNum){ break; }
-											
+
 											sib = sib.previousSibling;
-											
+
 											if(sib.nodeName != "#text"){
 												sibEl = sib;
 												num++;
 											}
-											
+
 										}
-										
+
 										for(var i=0; i<elems.length; i++) if(elems[i] == sibEl) pushFlag = false;
-										
+
 										if(pushFlag && sibEl != S[h]) elems.push(sibEl);
-										
+
 									} else { //It Self
-										
+
 										var pushFlag = true;
-										
+
 										for(var i=0; i<elems.length; i++) if(elems[i] == S[h]) pushFlag = false;
-										
+
 										if(pushFlag) elems.push(S[h]);
-										
+
 									}
-											
+
 								} else { //It Can'T Be A Number; Therefore, You Should Select Them By Tag Name
-									
+
 									str[k] = str[k].toUpperCase() //Make It UpperCase Because Of Node Names Are Capital
-									
+
 									var sib = S[h].parentNode.childNodes;
-									
+
 									for(var i=0; i<sib.length; i++){
-										
+
 										if(S[h] != sib[i] && sib[i].nodeName == str[k]){
-											
+
 											var pushFlag = true;
-											
+
 											for(var j=0; j<elems.length; j++) if(elems[j] == sib[i]) pushFlag = false;
-											
+
 											if(pushFlag) elems.push(sib[i]);
-											
+
 										}
-										
+
 									}
-									
+
 								}
-								
+
 							}
-							
+
 						}
-						
+
 					} else { //Else If TypeOf Arguments Didn't Number/String
-						
+
 						throw Error("javaSnake: Put Number/String Value In Arguments Of siblinger() Function !");
-						
+
 					}
-					
+
 				}
-					
+
 			}
-			
+
 			S.splice(0,this.length);
-			
+
 			for(var i=0; i<elems.length; i++) S.push(elems[i]);
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		}; //End Of Siblinger Function//
 		S.prvSib = function(){
-			
+
 			var elems = [];
-			
+
 			for(var i=0; i<S.length; i++)
 				if(S[i].previousSibling != undefined)
 					if(S[i].previousSibling.nodeName != "#text")
@@ -1722,18 +1722,18 @@ var jSnake = (function(slct, index){
 					else
 						if(S[i].previousSibling.previousSibling != undefined)
 							elems.push(S[i].previousSibling.previousSibling);
-			
+
 			S.splice(0,this.length);
-			
+
 			for(var i=0; i<elems.length; i++) S.push(elems[i]);
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.nxtSib = function(){
-			
+
 			var elems = [];
-			
+
 			for(var i=0; i<S.length; i++){
 				if(S[i].nextSibling != undefined)
 					if(S[i].nextSibling.nodeName != "#text")
@@ -1742,79 +1742,79 @@ var jSnake = (function(slct, index){
 						if(S[i].nextSibling.nextSibling != undefined)
 							elems.push(S[i].nextSibling.nextSibling);
 			}
-			
+
 			S.splice(0,this.length);
-			
+
 			for(var i=0; i<elems.length; i++) S.push(elems[i]);
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.child = function(num){
-			
+
 			if(typeof num == 'number'){
-				
+
 				var elems = [];
-				
+
 				for(var i=0; i<S.length; i++)
 					if(S[i].childNodes[num].nodeName != "#text" && S[i].childNodes.length != 0)
 						elems.push(S[i].childNodes[num]);
 					else
 						window.jSnake.warning("javaSnake: Some Of Child Nodes Was Not Selected, Because They Was 'textNode' !\nOR -> There Is Not Any ChildNodes !");
-				
+
 				S.splice(0,this.length);
-				
+
 				for(var i=0; i<elems.length; i++) S.push(elems[i]);
-				
+
 				return S;/*Continue Developing !*/
-				
+
 			} else if(typeof num == 'string' && typeof Number(num) == 'number'){
-				
+
 				var elems = [];
-				
+
 				for(var i=0; i<S.length; i++)
 					if(S[i].childNode[Number(num)].nodeName != "#text" && S[i].childNodes.length != 0)
 						elems.push(S[i].childNodes[Number(num)]);
 					else
 						window.jSnake.warning("javaSnake: Some Of Child Nodes Was Not Selected, Because They Was 'textNode' !\nOR -> There Is Not Any ChildNodes !");
-				
+
 				S.splice(0,this.length);
-				
+
 				for(var i=0; i<elems.length; i++) S.push(elems[i]);
-				
+
 				return S;/*Continue Developing !*/
-				
+
 			} else {
-				
+
 				throw Error("javaSnake: Put A Number Value In Argument Of child() Function !");
-				
+
 			}
-			
+
 		};
 		S.parent = function(){
-			
+
 			var elems = [];
-			
+
 			for(var i=0; i<S.length; i++){
-				
+
 				var exists = false;
-				
+
 				for(var j=0; j<elems.length; j++){
-					
+
 					if(elems[j] == S[i].parentElement) exists = true;
-					
+
 				}
-				
+
 				if(!exists) elems.push(S[i].parentElement);
-				
+
 			}
-			
+
 			S.splice(0,this.length);
-			
+
 			for(var i=0; i<elems.length; i++) S.push(elems[i]);
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.fullS = function(){
 		/*
@@ -1850,59 +1850,59 @@ var jSnake = (function(slct, index){
 		};
 		S.indexer = function (index){
 			if(typeof index == 'number'){ //In Number Mode
-				
+
 				if(this.length > 1){
-					
+
 					if(index >= this.length-1){
-						
+
 						S.splice(0,this.length-1);
-						
+
 					} else if(index <= 0){
-						
+
 						S.splice(1,this.length);
-						
+
 					} else {
-						
+
 						S.splice(index+1,(this.length-1)-index);
 						S.splice(0,index);
-						
+
 					}
 				}
-				
+
 			} else if(typeof index == 'string'){ //In String Mode
-				
+
 				if(this.length > 1){
-					
+
 					index = index.toLowerCase();
-					
+
 					switch (index){
 						case "$odd":
-							
+
 							var temp = [];
 							for(var i=0; i<S.length; i++){
-								
+
 								if(i == 0 || i%2 == 0){
 									temp.push(S[i]);
 								}
-								
+
 							}
 							S.splice(0,this.length);
 							for(var i=0; i<temp.length; i++){ S.push(temp[i]) }
-							
+
 						break;
 						case "$even":
-							
+
 							var temp = [];
 							for(var i=0; i<S.length; i++){
-								
+
 								if(i == 1 || i%2 != 0){
 									temp.push(S[i]);
 								}
-								
+
 							}
 							S.splice(0,this.length);
 							for(var i=0; i<temp.length; i++){ S.push(temp[i]) }
-							
+
 						break;
 						case "$first":
 							S.splice(1,this.length);
@@ -1911,398 +1911,404 @@ var jSnake = (function(slct, index){
 							S.splice(0,this.length-1);
 						break;
 					}
-					
+
 				}
-				
+
 			}
 			return S;
 		};
 		S.S = window.jSnake,
 		S.pushElem = function(){
-			
+
 			for(var i=0; i<arguments.length; i++){
-				
+
 				var stack = arguments[i];
-				
+
 				if(typeof stack == 'string'){ //General String
-					
+
 					var temp = document.querySelectorAll(stack);
 					for(var j=0; j<temp.length; j++){
 						S.push(temp[j]);
 					}
-					
+
 				} else if(typeof stack == 'object'){
-					
+
 					if(stack.ARRAY_TYPE == "Snake.js"){
-						
+
 						for(var j=0; j<stack.length; j++){
-							
+
 							S.push(stack[j]);
-							
+
 						}
-						
+
 					} else {
-						
+
 						S.push(stack);
-						
+
 					}
-					
+
 				}
-				
+
 			}
-			
+
 			return S; //Continue Developing
 		};
 		S.scrlTop = function(scrollSize){
-			
+
 			if(scrollSize === undefined){
-				
+
 				if(S[0] != window) return S[0].scrollTop;
 				else return S[0].pageYOffset;
-				
+
 			} else if(typeof scrollSize == 'number'){
-				
+
 				for(var i=0; i<S.length; i++){
-					
+
 					S[i].scrollTop = scrollSize;
-					
+
 				}
 				return S; //Continue Developing
 			}
-			
+
 		};
 		S.scrlLeft = function(scrollSize){
-			
+
 			if(scrollSize === undefined){
-				
+
 				if(S[0] != window) return S[0].scrollLeft;
 				else return S[0].pageXOffset;
-				
+
 			} else if(typeof scrollSize == 'number'){
-				
+
 				for(var i=0; i<S.length; i++){
-					
+
 					S[i].scrollLeft = scrollSize;
-					
+
 				}
 				return S; //Continue Developing
 			}
-			
+
 		};
 		S.scrlWidth = function(){
-			
+
 			if(S[0] != window) return S[0].scrollWidth;
 			else return S[0].innerWidth;
-			
+
 		};
 		S.scrlHeight = function(){
-			
+
 			if(S[0] != window) return S[0].scrollHeight;
 			else return S[0].innerHeight;
-			
+
 		};
 		S.onScrollArrives = function(func,before){
-			
+
 			if(before === undefined || typeof before != 'boolean') before = false;
-			
+
 			for(var i=0; i<S.length; i++){
-				
+
 				window.jSnake.onScrollArrives(S[i],func,before);
-				
+
 			}
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.onScrollArrivesOnce = function(func,before){
-			
+
 			if(before === undefined || typeof before != 'boolean') before = false;
-			
+
 			for(var i=0; i<S.length; i++){
-				
+
 				window.jSnake.onScrollArrivesOnce(S[i],func,before);
-				
+
 			}
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.scrlToX = function(num,speed,delay){
-			
+
 			for(var i=0; i<S.length; i++){
-				
+
 				if(S[i] != window && S[i] != document){
-					
+
 					window.jSnake.scrlToX_elem(S[i],num,speed,delay);
-					
+
 				} else {
-					
+
 					window.jSnake.scrlToX(num,speed,delay);
-					
+
 				}
-				
+
 			}
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.scrlToY = function(num,speed,delay){
-			
+
 			for(var i=0; i<S.length; i++){
-				
+
 				if(S[i] != window && S[i] != document){
-					
+
 					window.jSnake.scrlToY_elem(S[i],num,speed,delay);
-					
+
 				} else {
-					
+
 					window.jSnake.scrlToY(num,speed,delay);
-					
+
 				}
-				
+
 			}
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.scrlToXY = function(num,speed,delay){
-			
+
 			for(var i=0; i<S.length; i++){
-				
+
 				if(S[i] != window && S[i] != document){
-					
+
 					window.jSnake.scrlToX_elem(S[i],num,speed,delay);
 					window.jSnake.scrlToY_elem(S[i],num,speed,delay);
-					
+
 				} else {
-					
+
 					window.jSnake.scrlToX(num,speed,delay);
 					window.jSnake.scrlToY(num,speed,delay);
-					
+
 				}
-				
+
 			}
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.property = function(){
-			
+
 			var rtrn = null;
 			for(var i=0; i<S.length; i++){
 				for(var j=0; j<arguments.length; j++){
 					var prop = arguments[j];
 					switch(typeof prop){
 						case 'string':
-							
+
 							if(typeof arguments[j+1] == 'string'){
-								
+
 								if(prop in S[i]){
 									S[i][prop] = arguments[j+1];
 								}
 								j++;
-								
+
 							} else {
 								if(prop in S[0]){
 									rtrn = S[0][prop];
 								}
 							}
-							
+
 						break;
 						case 'object':
-							
+
 							for(var p in prop){
 								if(p in S[i]){ S[i][p] = prop[p]; }
 							}
-							
+
 						break;
 					}
 				}
 			}
 			return rtrn != null? rtrn:S/*Continue Developing*/;
-			
+
 		};
 		S.outerWidth = function(marginBool){
-			
+
 			var ouWt = 0;
-			
+
 			if(S[0] != window){
-				
+
 				ouWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("border-width"))[0]) * 2;
 				ouWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-left"))[0]);
 				ouWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-right"))[0]);
 				ouWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("width"))[0]);
-				
+
 				if(marginBool !== undefined){
 					if(typeof marginBool == 'boolean'){
-						
+
 						if(marginBool){
 							ouWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("margin-left"))[0]);
 							ouWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("margin-right"))[0]);
 						}
-						
+
 					} else {
-						
+
 						throw Error("javaSnake: Put Boolean Value In The Argument Of outerWidth() Function !");
-						
+
 					}
 				}
-				
+
 				return ouWt;
-				
+
 			} else {
-				
+
 				return window.outerWidth;
-				
+
 			}
-			
+
 		};
 		S.outerHeight = function(marginBool){
-			
+
 			var ouHt = 0;
-			
+
 			if(S[0] != window){
-				
+
 				ouHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("border-width"))[0]) * 2;
 				ouHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-top"))[0]);
 				ouHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-bottom"))[0]);
 				ouHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("height"))[0]);
-				
+
 				if(marginBool !== undefined){
 					if(typeof marginBool == 'boolean'){
-						
+
 						if(marginBool){
 							ouHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("margin-top"))[0]);
 							ouHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("margin-bottom"))[0]);
 						}
-						
+
 					} else {
-						
+
 						throw Error("javaSnake: Put Boolean Value In The Argument Of outerHeight() Function !");
-						
+
 					}
 				}
-				
+
 				return ouHt;
-				
+
 			} else {
-				
+
 				return window.outerHeight;
-				
+
 			}
-			
+
 		};
 		S.innerWidth = function(){
-			
+
 			var inWt = 0;
-			
+
 			if(S[0] != window){
-				
+
 				inWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-left"))[0]);
 				inWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-right"))[0]);
 				inWt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("width"))[0]);
-				
+
 				return inWt;
-				
+
 			} else {
-				
+
 				return window.innerWidth;
-				
+
 			}
-			
+
 		};
 		S.innerHeight = function(){
-			
+
 			var inHt = 0;
-			
+
 			if(S[0] != window){
-				
+
 				inHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-top"))[0]);
 				inHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("padding-bottom"))[0]);
 				inHt += window.jSnake.isNumUndefined(window.jSnake.styleToNum(window.getComputedStyle(S[0],null).getPropertyValue("height"))[0]);
-				
+
 				return inHt;
-				
+
 			} else {
-				
+
 				return window.innerHeight;
-				
+
 			}
-			
+
 		};
 		S.rev = function(){
-			
+
 			S = window.jSnake.rev(S);
 			return S;
-			
+
 		};
 		S.toggleAttr = function(attrName, val1, val2){
-			
+
 			if(typeof attrName == 'string'){
-			
+
 				if(val2 === undefined){//Toggle One Value
-					
+
 					for(var i=0; i<S.length; i++){//For Each Element
-						
+
 						if(S[i].getAttribute(attrName) == val1){
-							
+
 							S[i].setAttribute(attrName, "");
-							
+
 						} else {
-							
+
 							S[i].setAttribute(attrName, val1);
-							
+
 						}
-						
+
 					}
-					
+
 				} else {//Toggle Two Values
-					
+
 					for(var i=0; i<S.length; i++){//For Each Element
-						
+
 						if(S[i].getAttribute(attrName) == val1){
-							
+
 							S[i].setAttribute(attrName, val2);
-							
+
 						} else if(S[i].getAttribute(attrName) == val2){
-							
+
 							S[i].setAttribute(attrName, val1);
-							
+
 						} else {
-							
+
 							S[i].setAttribute(attrName, val1);
-							
+
 						}
-						
+
 					}
-					
+
 				}
-				
+
 			} else {//Non-String Value
-				
+
 				throw Error("javaSnake: Put String Value In The First Argument Of toggleAttr() Function !");
-				
+
 			}
-			
+
 			return S;/*Continue Developing !*/
-			
+
 		};
 		S.realStyle = function(property, pseudoElt){
-			
+
 			return window.jSnake.realStyle(S[0],property,pseudoElt);
-			
+
 		};
+		S.getElemBCR = function(){
+
+		    return window.jSnake.getElemBCR(S[0]);
+
+        };
+		S.append = S.appendChild;
 		S.TEST = function(){
-			
+
 			// You Can Also Test Your Functions Here To
 			// Develop This Library !
-			
+
 		};
 		//End Of Function Variables
-		
-		
-		
-		
+
+
+
+
 		//////////////////////////////////////////////////////////////////////////////////////////
 		//                                 LIST OF PROPERTIES                                   //
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -2448,9 +2454,9 @@ var jSnake = (function(slct, index){
 		//Note That Ajax Functions Are In Ajax Mode.
 		/*( It Means When You Didn't Put Any Ajax Object/Command In The 'SELECTOR'() Function,
 			You Will Not Be Able To Access And Use Ajax Functions )*/
-		
+
 		window.jSnake.selected = S;
-		
+
 	return S;/*End Of javaSnake() Selector Function*/}
 	/*
 	 *	Pure/Inner Helping Functions
@@ -2475,34 +2481,34 @@ var jSnake = (function(slct, index){
 	/*
 	 *	Function For Ready Ajax Object
 	 */
-	
+
 		try {
-			
+
 			return new XMLHttpRequest();
-			
+
 		} catch(e) {
-			
+
 			try {
-				
+
 				return new ActiveXObject("Msxml2.XMLHTTP");
-				
+
 			} catch(e) {
-				
+
 				try {
-					
+
 					return new ActiveXObject("Microsoft.XMLHTTP");
-					
+
 				} catch(e) {
-					
+
 					//return "A newer browser is needed !";
 					throw Error("A newer browser is needed !");
-					
+
 				}
-				
+
 			}
-			
+
 		}
-		
+
 	}//End Of Ajax Function
 	function styleToJs_(property){
 	/*
@@ -2523,7 +2529,7 @@ var jSnake = (function(slct, index){
 		}
 		return "float";
 	}
-	
+
 }());//End Of javaSnake In Function Mode
 
 //javaSnake In Object Mode
@@ -3933,17 +3939,6 @@ window.jSnake.realStyle = function(element, property, pseudoElt){
     }
 	
 };
-//Main Variables In javaSnake (Object Mode)
-////////////////////////////////////////////
-////////////////////////////////////////////
-////////////////////////////////////////////
-////////////////////////////////////////////
-////////////////////////////////////////////
-////////////////////////////////////////////
-////////////////////////////////////////////
-
-window.jSnake.selected = null;
-window.jSnake.vars = {};
 window.jSnake.onLoadReloadVars = function(){
 	
 	var allElements = document.querySelectorAll("*"),
@@ -4352,6 +4347,26 @@ window.jSnake.getViewportSize = function(){
     return [viewPortWidth, viewPortHeight];
 
 };
+//Same as DOMElement.getBoundingClientRect() function
+window.jSnake.getElemBCR = function(element){
+
+    //Thanks to these (Q & A) guys !
+    //http://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
+    return element.getBoundingClientRect();
+
+};
+//Main Variables In javaSnake (Object Mode)
+////////////////////////////////////////////
+////////////////////////////////////////////
+////////////////////////////////////////////
+////////////////////////////////////////////
+////////////////////////////////////////////
+////////////////////////////////////////////
+////////////////////////////////////////////
+
+window.jSnake.selected = null;
+window.jSnake.vars = {};
+
 //End Of javaSnake In Object Mode
 ////////////////////////////////////////////
 ////////////////////////////////////////////
